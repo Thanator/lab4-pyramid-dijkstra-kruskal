@@ -44,7 +44,22 @@ TEST(separate_array, cant_merge_elems_when_parameters_incorrect)
 	ASSERT_ANY_THROW(A.merge(-1, 1));
 }
 
-TEST(separate_array, kruskaltest)
+TEST(separate_array, can_setnumnu)
 {
+	separate_array A(2);
+	A.setNN(0, 1);
+	EXPECT_EQ(A.getNN(0), 1);
+}
 
+TEST(separate_array, can_getnum)
+{
+	separate_array A(2);
+	A.setNN(0, 1);
+	EXPECT_EQ(A.getNN(0), 1);
+}
+
+TEST(separate_array, cangetnumnodes)
+{
+	separate_array A(2);
+	EXPECT_EQ(A.getNuN(), 2);
 }

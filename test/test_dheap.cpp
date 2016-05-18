@@ -41,8 +41,8 @@ TEST(DHeap, can_transposition)
 	DHeap<int> a(3, 4);
 	a.changeKey(1, 3);
 	a.changeKey(3, 4);
-	a.transposition(a.keys[3], a.keys[1]);
-	ASSERT_EQ(a.keys[1], 4);
+	a.transposition(a.getElem(3), a.getElem(1));
+	ASSERT_EQ(a.getElem(1), 4);
 	
 
 }
@@ -53,7 +53,7 @@ TEST(DHeap, can_pop_keys)
 	a.changeKey(0, 1);
 	a.changeKey(1, -1);
 	a.pop(1);
-	ASSERT_EQ(a.keys[0], -1);
+	ASSERT_EQ(a.getElem(0), -1);
 }
 
 TEST(DHeap, throw_when_wrong_pos_pop)
@@ -82,7 +82,7 @@ TEST(DHeap, can_dip_keys)
 	DHeap<int> a(2, 6);
 	a.changeKey(0, 5);
 	a.dip(0);
-	ASSERT_EQ(a.keys[3], 5);
+	ASSERT_EQ(a.getElem(3), 5);
 }
 
 TEST(DHeap, throw_when_wrong_pos_dip)
@@ -97,7 +97,7 @@ TEST(DHeap, can_drop_node)
 	a.changeKey(2, 6);
 	a.changeKey(5, -1);
 	a.drop(2);
-	ASSERT_EQ(a.keys[0], -1);
+	ASSERT_EQ(a.getElem(0), -1);
 }
 
 TEST(DHeap, throw_when_wrong_pos_drop)
@@ -110,7 +110,7 @@ TEST(DHeap, can_changekey)
 {
 	DHeap<int> a(2, 6);
 	a.changeKey(5, 5);
-	ASSERT_EQ(a.keys[5], 5);
+	ASSERT_EQ(a.getElem(5), 5);
 }
 
 TEST(DHeap, throw_when_wrong_pos_changekey)
@@ -132,7 +132,7 @@ TEST(DHeap, can_heapfy)
 	int count = 0;
 	for (int i = 0; i < 5; i++)
 	{
-		if (a.keys[i] == r[i])
+		if (a.getElem(i) == r[i])
 			count++;
 	}
 	ASSERT_EQ(count, 5);
@@ -143,4 +143,17 @@ TEST(DHeap, droplast)
 	DHeap<int> a;
 	ASSERT_NO_THROW(a.drop(0));
 	
+}
+
+TEST(DHeap, can_getsize)
+{
+	DHeap<int> a(2, 5);
+	EXPECT_EQ(5, a.getSize());
+}
+
+TEST(DHeap, can_getelem)
+{
+	DHeap<int> a(2, 5);
+	a.changeKey(0, -1);
+	EXPECT_EQ(-1, a.getElem(0));
 }

@@ -10,20 +10,20 @@ template <class T>
 void pyramidsort(DHeap<T>& A)
 {
 	A.heapfy();
-	int sizeA = A.size - 1;
-	int sizeB = A.size;
+	int sizeA = A.getSize() - 1;
+	int sizeB = A.getSize();
 	T *tmp = new T[sizeB];
 	int n = 0;
 	while (sizeA > 0)
 	{
-		tmp[n] = A.keys[0];
-		A.transposition(A.keys[0], A.keys[sizeA]);
+		tmp[n] = A.getElem(0);
+		A.transposition(A.getElem(0), A.getElem(sizeA));
 		A.drop(sizeA);
 		sizeA -= 1;
 		A.dip(0);
 		n++;
 	}
-	tmp[n] = A.keys[0];
+	tmp[n] = A.getElem(0);
 	for (int i = 0; i < sizeB - 1; i++)
 		A.insert(0);
 	for (int i = 0; i < sizeB; i++)
@@ -40,12 +40,24 @@ int main()
 	int _dim = 0;
 	int _size = 0;
 	printf("Hello! This is sample programm for D-heap class and pyramid sort\n");
-	printf("Can you enter the dimension, please?\n");
-	scanf_s("%d", &_dim);
-	printf("Can you enter the size of heap, please?\n");
-	scanf_s("%d", &_size);
+	printf("Can you enter the dimension, please?\n"); 
+	while (_dim <= 0)
+	{
+		scanf_s("%d", &_dim);
+		if (_dim <= 0)
+			printf("The dimension should be greater than 0.Try again.\n");
+	}
+
+	printf("Can you enter the size of heap, please?\n"); 
+	while (_size <= 0)
+	{
+		scanf_s("%d", &_size);
+		if (_size <= 0)
+			printf("The size should be greater than 0.Try again.\n");
+	}
+
 	DHeap<int> A(_dim, _size);
-	for (int i = 0; i < A.size; i++)
+	for (int i = 0; i < A.getSize(); i++)
 		A.changeKey(i, rand() % 10 + 0);
 	A.heapfy();
 	printf("It's your array of heap without sorting\n");

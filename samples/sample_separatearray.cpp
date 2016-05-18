@@ -8,18 +8,22 @@
 void kruskal(Graph& A)
 {
 	Graph B(A); // отметим на нём рёбра, которые были пройдены успешно.
-	separate_array sa(A.numnodes); // создали разд. мн-во
-	for (int i = 0; i < A.numnodes; i++) // заполнили его числами от 65 до A.numnodes
-		A.adjmatrix[i][i] = sa.nodesnames[i] = 65 + i;
-	prior_queue q(A.numedges); // создали приоритетную очередь из рёбер.
-	int k = 0;
-	for (int i = 0; i < A.numnodes; i++) // заполнили очередь
+	separate_array sa(A.getNN()); // создали разд. мн-во
+	for (int i = 0; i < A.getNN(); i++) // заполнили его числами от 65 до A.numnodes
 	{
-		for (int j = 1 + i; j < A.numnodes; j++)
+		A.setAE(i, i, 65 + i);
+		sa.setNN(i, 65 + i);
+	}
+		
+	prior_queue q(A.getNE()); // создали приоритетную очередь из рёбер.
+	int k = 0;
+	for (int i = 0; i < A.getNN(); i++) // заполнили очередь
+	{
+		for (int j = 1 + i; j < A.getNN(); j++)
 		{
-			if (A.adjmatrix[i][j] != -1)
+			if (A.getAE(i,j) != -1)
 			{
-				q.changeKey(k, A.adjmatrix[i][j]);
+				q.changeKey(k, A.getAE(i, j));
 				k++;
 			}	
 		}
@@ -30,15 +34,15 @@ void kruskal(Graph& A)
 	{
 		int mark = 0;
 		//int str = 0, col = 0;
-		int current = q.keys[0]; // получили элемент с вершины очереди 
+		double current = q.getElem(0); // получили элемент с вершины очереди 
 		q.drop();// выкинули полученный элемент из очереди
-		for (int i = 0; i < A.numnodes; i++) //ищем строку и столбец элемента, который был на вершине очереди
+		for (int i = 0; i < A.getNN(); i++) //ищем строку и столбец элемента, который был на вершине очереди
 		{
-			for (int j = 1 + i; j < A.numnodes; j++) // получаем индексы current
+			for (int j = 1 + i; j < A.getNN(); j++) // получаем индексы current
 			{
-				if (A.adjmatrix[i][j] == current ) // условие успешного поиска ребра в графе
+				if (A.getAE(i,j) == current ) // условие успешного поиска ребра в графе
 				{
-					if ( B.adjmatrix[i][j] != -1) {  // если ребро не обошли, продолжаем действия
+					if ( B.getAE(i, j) != -1) {  // если ребро не обошли, продолжаем действия
 
 
 						str = i; // строка в матрице смежности в которой находится ребро
@@ -50,10 +54,11 @@ void kruskal(Graph& A)
 						}
 						else  
 						{
-							A.adjmatrix[str][col] = A.adjmatrix[col][str] = -1; // а если равны, то рёбра в -1.
+							 // а если равны, то рёбра в -1.
+							A.setAE(str, col, -1); A.setAE(col, str, -1);
 						}
 						mark = 1; // метка выхода из внешнего цикла
-						B.adjmatrix[i][j] = -1; //сбрасываем в ребро в спец.графе
+						B.setAE(i,j,-1); //сбрасываем в ребро в спец.графе
 						break;
 					}
 				}
@@ -75,20 +80,17 @@ int main()
 	int _enterpoint = 0;
 	printf("Hello! This is sample program for Separate array class and Kruskal's algorithm\n");
 	printf("Select the operating mode:\n");
-	printf("1: Test Mode\n");
+	printf("1: Manual Mode\n");
 	printf("2: Random Graph Mode\n");
 	int s = 0;
 	scanf_s("%d", &s);
 	switch (s)
 	{
 	case 1: {
-		Graph A(4, 6);
-		A.adjmatrix[0][1] = A.adjmatrix[1][0] = 9;
-		A.adjmatrix[0][2] = A.adjmatrix[2][0] = 1;
-		A.adjmatrix[0][3] = A.adjmatrix[3][0] = 3;
-		A.adjmatrix[1][2] = A.adjmatrix[2][1] = 5;
-		A.adjmatrix[1][3] = A.adjmatrix[3][1] = 1;
-		A.adjmatrix[2][3] = A.adjmatrix[3][2] = 1;
+		Graph A(5, 7);
+		string path;
+		cin >> path;
+		A.reInit(path);
 		printf("Source graph:\n");
 		A.printgraph();
 		printf("\n");
@@ -99,9 +101,19 @@ int main()
 		break; }
 	case 2: {
 		printf("Can you enter the number of nodes?\n");
-		scanf_s("%d", &_numnodes);
+		while (_numnodes <= 0)
+		{
+			scanf_s("%d", &_numnodes);
+			if (_numnodes <= 0)
+				printf("The number of nodes should be greater than 0.Try again.\n");
+		}
 		printf("Can you enter the number of edges?\n");
-		scanf_s("%d", &_numedges);
+		while (_numedges < _numnodes - 1 || _numedges >(_numnodes*(_numnodes - 1)) / 2)
+		{
+			scanf_s("%d", &_numedges);
+			if (_numedges < _numnodes - 1 || _numedges >(_numnodes*(_numnodes - 1)) / 2)
+				printf("Incorrect entry.Try again.\n");
+		}
 		Graph B(_numnodes, _numedges);
 		printf("Source graph:\n");
 		B.printgraph();

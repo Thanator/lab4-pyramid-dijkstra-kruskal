@@ -2,7 +2,7 @@
 template <class T>
 class DHeap
 {
-public:
+protected:
 	int dim;
 	int size;
 	T* keys;
@@ -20,6 +20,8 @@ public:
 	void printHeap();
 	void changeKey(int pos, T _newkey);
 	void heapfy();
+	int getSize(); // ТЕСТЫ
+	T& getElem(int num); // от нуля до сайз ТЕСТЫ
 };
 
 template <class T>
@@ -189,7 +191,19 @@ void DHeap<T>::heapfy()
 		dip(i);
 }
 
+template <class T>
+int DHeap<T>::getSize()
+{
+	return size;
+}
 
+template <class T>
+T& DHeap<T>::getElem(int num)
+{
+	if (num<0 || num > size - 1)
+		throw num;
+	return keys[num];
+}
 
 
 

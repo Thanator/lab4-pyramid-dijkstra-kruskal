@@ -3,10 +3,13 @@
 #include <iostream>
 #include <time.h> 
 #include "dheap.h"
+#include <stdio.h>
+#include <string>
+using namespace std;
 
 
 
-class prior_queue : public DHeap<int>
+class prior_queue : public DHeap<double>//
 {
 public:
 	prior_queue();
@@ -14,7 +17,7 @@ public:
 	prior_queue(int size);
 	void insert(int _elem);
 	void drop();
-	void changeKey(int pos, int _newkey);
+	void changeKey(int pos, double _newkey);//
 	bool isEmpty();
 	void heapfy();
 
@@ -22,8 +25,8 @@ public:
 
 class Graph
 {
-public:
-	int** adjmatrix;
+protected:
+	double** adjmatrix;//
 	int numnodes;
 	int numedges;
 public:
@@ -32,6 +35,11 @@ public:
 	Graph(int _numnodes, int _numedges);
 	void printgraph();
 	void Dijkstra(int _enterpoint);
+	void reInit(string path); // инициализация графа из файла
+	double getAE(int num, int num1); // ТЕСТЫ
+	int getNN(); // ТЕСТЫ
+	int getNE(); // ТЕСТЫ
+	void setAE(int num, int num1, double newelem);// ТЕСТЫ
 
 };
 
