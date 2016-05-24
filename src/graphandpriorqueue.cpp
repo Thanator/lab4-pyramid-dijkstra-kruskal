@@ -173,6 +173,7 @@ using namespace std;
 
 	void Graph::Dijkstra(int _enterpoint)
 	{
+		Graph B(*this);
 		int* previndex = new int[numnodes];
 		int* specarr = new int[numnodes]; //без повторов
 		for (int i = 0; i < numnodes; i++)
@@ -196,11 +197,7 @@ using namespace std;
 			{
 				if (a.getElem(0) == adjmatrix[i][i] && specarr[i] != -1)
 				{
-					if (previndex[prevcounter - 1] != i)
-					{
-						previndex[prevcounter] = i;
-						prevcounter++;
-					}
+					previndex[i] = GetMin(i, B);
 					specarr[i] = -1;
 					numlock = i;
 					break;
@@ -230,10 +227,10 @@ using namespace std;
 			//a.heapfy(); //окучиваем. Минимальное значение будет на вершине очереди ??
 			k++;
 		}
-		printf("%d, ", previndex[0]);
-		for (int i = 1; i < numnodes; i++)
+		//printf("%d, ", previndex[0]);
+		for (int i = 0; i < numnodes; i++)
 		{
-			printf("%d -> %d, ", previndex[i-1], previndex[i]);
+			printf("%d <- %d, ", previndex[i], i);
 		}
 			
 		printf("\n");
@@ -337,4 +334,19 @@ using namespace std;
 		adjmatrix[num][num1] = newelem;
 
 
+	}
+
+	int Graph::GetMin(int num, Graph B) // эта штука делает то, что просила Валентина Дмитриевна
+	{
+		int minindex = num;
+		for (int i = 0; i < numnodes; i++)
+		{
+			if (adjmatrix[i][i] < adjmatrix[num][num] && B.adjmatrix[num][i] != -1)
+			{
+				minindex = i;
+				break;
+			}
+				
+		}
+		return minindex;
 	}

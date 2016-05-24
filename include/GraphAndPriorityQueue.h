@@ -40,6 +40,7 @@ public:
 	int getNN(); // реярш
 	int getNE(); // реярш
 	void setAE(int num, int num1, double newelem);// реярш
+	int GetMin(int num, Graph B);
 
 };
 
